@@ -1,16 +1,20 @@
 import React from "react";
-import { Container } from "bloomer";
+import ReactMarkdown from "react-markdown";
+import { useParams } from "react-router-dom";
 import "./Issue.css";
 
 const Issue = props => {
-    const { title, html_url, body } = props.issue;
+    const { issues } = props;
+    const { issue_number } = useParams();
+    const issue = issues.find((issue) => {
+        return issue.number === parseInt(issue_number) ?
+        issue : null;
+    });
+
     return (
         <>
-            <Container isFluid className="singleIssue">
-                <h1>{title}</h1>
-                <a href={html_url}>{html_url}</a>
-                <p>{body}</p>
-            </Container>
+            <h1>{issue.title}</h1>
+            <ReactMarkdown source={issue.body} escapeHtml={false} />
         </>
     )
 }
